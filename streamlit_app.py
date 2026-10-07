@@ -96,6 +96,12 @@ def tr_number(value: int) -> str:
     return f"{value:,}".replace(",", ".")
 
 
+def amount_label(amount: int) -> str:
+    if amount % 1_000_000_000 == 0:
+        return f"{tr_number(amount // 1_000_000_000)} milyar TL"
+    return f"{tr_number(amount // 1_000_000)} milyon TL"
+
+
 def result_text(amount: int, item: dict) -> tuple[str, str]:
     exact = amount / item["unit"]
     whole = math.floor(exact)
@@ -159,18 +165,31 @@ st.markdown(
 
 selected = st.radio(
     "Karşılaştırılacak tutarı seçin",
-    options=list(VALUES.keys()),
+    options=[*VALUES.keys(), "Siz seçin"],
     index=1,
     horizontal=True,
     label_visibility="collapsed",
 )
-amount = VALUES[selected]
+
+if selected == "Siz seçin":
+    custom_million = st.number_input(
+        "Tutarınızı girin (milyon TL)",
+        min_value=1,
+        value=100,
+        step=1,
+        help="En düşük tutar 1 milyon TL'dir. Örneğin 250 yazarak 250 milyon TL seçebilirsiniz.",
+    )
+    amount = int(custom_million) * 1_000_000
+else:
+    amount = VALUES[selected]
+
+display_amount = amount_label(amount)
 
 st.markdown(
     f"""
     <div class="amount-panel">
       <div class="eyebrow">Seçilen tutar</div>
-      <div class="amount">{selected}</div>
+      <div class="amount">{display_amount}</div>
     </div>
     <div class="section-title">Bu parayla yaklaşık olarak…</div>
     """,
