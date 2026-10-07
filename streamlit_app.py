@@ -89,6 +89,42 @@ BENCHMARKS = [
         "url": "https://atonet.org.tr/Uploads/Birimler/Internet/Hizmetlerimiz/Azami%20Fiyat%20Tarifleri/2026_azami_fiyat_tarifesi/2026_ekmek_azami_fiyat_tarifesi_20260331.pdf",
         "kind": "count",
     },
+    {
+        "icon": "🚛",
+        "title": "200 TL banknotlarla para kamyonu",
+        "unit": (25_000_000 / 1.13) * 200,
+        "unit_label": "Yaklaşık 4,42 milyar TL / kamyon",
+        "source": "Varsayım: banknot 1,13 gram; kamyon kapasitesi 25 ton",
+        "url": "",
+        "kind": "truck",
+    },
+    {
+        "icon": "🫒",
+        "title": "Siyah zeytin",
+        "unit": 169,
+        "unit_label": "169 TL / kilogram",
+        "source": "1 kg paket ekonomik siyah zeytin – 6 Ekim 2026",
+        "url": "https://zeytin.net/sektor/perakende",
+        "kind": "kg",
+    },
+    {
+        "icon": "🧀",
+        "title": "Beyaz peynir",
+        "unit": 227.50,
+        "unit_label": "227,50 TL / kilogram",
+        "source": "Zincir marketlerin ortanca fiyatı – 5 Ekim 2026",
+        "url": "https://hepsihal.com/market-fiyatlari/beyaz-peynir",
+        "kind": "kg",
+    },
+    {
+        "icon": "🍯",
+        "title": "Süzme çiçek balı",
+        "unit": 422.35,
+        "unit_label": "422,35 TL / kilogram",
+        "source": "Perakende birim fiyatı – 6 Ekim 2026",
+        "url": "https://neredeucuz.com.tr/fiyat/bal",
+        "kind": "kg",
+    },
 ]
 
 
@@ -106,6 +142,10 @@ def result_text(amount: int, item: dict) -> tuple[str, str]:
     exact = amount / item["unit"]
     whole = math.floor(exact)
 
+    if item["kind"] == "truck":
+        return f"{exact:.2f}".replace(".", ","), "kamyon"
+    if item["kind"] == "kg":
+        return tr_number(whole), "kilogram"
     if item["kind"] == "people":
         return tr_number(whole), "kişinin 1 yıllık geliri"
     if item["kind"] == "students":
@@ -200,6 +240,11 @@ for start in range(0, len(BENCHMARKS), 4):
     cols = st.columns(4)
     for col, item in zip(cols, BENCHMARKS[start : start + 4]):
         number, unit = result_text(amount, item)
+        source_detail = (
+            f'<a href="{item["url"]}" target="_blank">{item["source"]} ↗</a>'
+            if item["url"]
+            else item["source"]
+        )
         with col:
             st.markdown(
                 f"""
@@ -210,7 +255,7 @@ for start in range(0, len(BENCHMARKS), 4):
                   <div class="card-unit">{unit}</div>
                   <div class="card-source">
                     {item['unit_label']}<br>
-                    <a href="{item['url']}" target="_blank">{item['source']} ↗</a>
+                    {source_detail}
                   </div>
                 </div>
                 """,
