@@ -170,6 +170,8 @@ st.markdown(
     .hero p {font-size:1.06rem; color:#5d6778; max-width:720px; margin:.4rem auto 1rem; line-height:1.65;}
     div[role="radiogroup"] {justify-content:center; gap:.6rem;}
     div[role="radiogroup"] label {background:#fff; border:1px solid #dfe4ec; padding:.65rem 1rem; border-radius:999px; box-shadow:0 4px 14px rgba(25,35,55,.05);}
+    div[role="radiogroup"] label, div[role="radiogroup"] label p, div[role="radiogroup"] label span {color:#152238 !important; opacity:1 !important; font-weight:700;}
+    div[role="radiogroup"] label [data-testid="stMarkdownContainer"] {color:#152238 !important;}
     .amount-panel {margin:1.25rem 0 1.6rem; padding:1.25rem; border-radius:24px; background:#152238; color:white; text-align:center; box-shadow:0 14px 35px rgba(21,34,56,.18);}
     .amount-panel .eyebrow {font-size:.8rem; opacity:.72; letter-spacing:.08em; text-transform:uppercase;}
     .amount-panel .amount {font-size:clamp(2rem, 6vw, 3.8rem); font-weight:900; letter-spacing:-.04em; line-height:1.08;}
